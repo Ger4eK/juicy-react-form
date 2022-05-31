@@ -8,6 +8,7 @@ import { PrimaryButton } from '../Components/PrimaryButton';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { useData } from '../DataContext';
 
 const schema = yup.object().shape({
   firstName: yup
@@ -22,14 +23,21 @@ const schema = yup.object().shape({
 
 export const Step1 = () => {
   const navigate = useNavigate();
+  const { data, setValues } = useData();
+  //! тепер враховуючи шо ми маємо доступ до данних які зберігаються в контексті ми можем їх передати як дефолтні
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: 'onBlur', resolver: yupResolver(schema) });
+  } = useForm({
+    defaultValues: { firstName: data.firstName, lastName: data.lastName },
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  });
 
   const onSubmit = (data) => {
-    navigate('/step2')
+    navigate('/step2');
+    setValues(data);
   };
 
   return (

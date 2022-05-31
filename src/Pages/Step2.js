@@ -9,6 +9,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import parsePhoneNumberFromString from 'libphonenumber-js';
+import { useData } from '../DataContext';
 
 const schema = yup.object().shape({
   email: yup
@@ -22,23 +23,33 @@ const normalizePhoneNumber = (value) => {
   if (!phoneNumber) {
     return value;
   }
-  return phoneNumber.formatInternational()
+  return phoneNumber.formatInternational();
 };
 
 export const Step2 = () => {
   const navigate = useNavigate();
+  const { data, setValues } = useData();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm({ mode: 'onBlur', resolver: yupResolver(schema) });
+  } = useForm({
+    defaultValues: {
+      email: data.email,
+      hasPhone: data.hasPhone,
+      phoneNumber: data.phoneNumber,
+    },
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  });
 
   //! константа яка буде слідкувати за полем hasPhone з допомогою метода watch. Вона буде автоматично оновлювати значеня цієї константи
   const hasPhone = watch('hasPhone');
 
   const onSubmit = (data) => {
     navigate('/step3');
+    setValues(data);
   };
 
   return (
@@ -62,6 +73,8 @@ export const Step2 = () => {
         <FormControlLabel
           control={
             <Checkbox
+              defaultValue={data.hasPhone}
+              defaultChecked={data.hasPhone}
               name='hasPhone'
               {...register('hasPhone')}
               color='primary'

@@ -1,16 +1,13 @@
-
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { Header } from './Components/Header';
+import { Result } from './Pages/Result';
 import { Step1 } from './Pages/Step1';
 import { Step2 } from './Pages/Step2';
 import { Step3 } from './Pages/Step3';
 
-const Result = () => <>Result</>;
-
 function App() {
   return (
     <>
-   
       <Header />
       <BrowserRouter>
         <Routes>

@@ -1,36 +1,58 @@
-import { Typography } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import { useForm } from 'react-hook-form';
 import { Form } from './Components/Form';
 import { Input } from './Components/Input';
 import { MainContainer } from './Components/MainContainer';
 import { PrimaryButton } from './Components/PrimaryButton';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
 export const Step1 = () => {
+  const schema = yup.object().shape({
+    firstName: yup
+      .string()
+      .matches(/^([^0-9]*)$/, 'First name should not contain numbers')
+      .required('First name is a required field'),
+    lastName: yup
+      .string()
+      .matches(/^([^0-9]*)$/, 'Last name should not contain numbers')
+      .required('Last name is a required field'),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ mode: 'onBlur' });
+  } = useForm({ mode: 'onBlur', resolver: yupResolver(schema) });
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
   return (
     <MainContainer>
       <Typography component='h2' variant='h5'>
         🦄 Step 1
       </Typography>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
-          ref={register('fistName')}
+          {...register('firstName')}
           id='firstName'
           type='text'
           label='First Name'
           name='firstName'
+          error={!!errors.firstName}
+          helperText={errors?.firstName?.message}
         />
         <Input
-          ref={register('lastName')}
+          {...register('lastName')}
           id='lastName'
           type='text'
           label='Last Name'
           name='lastName'
+          error={!!errors.lastName}
+          helperText={errors?.lastName?.message}
         />
         <PrimaryButton>Next</PrimaryButton>
       </Form>

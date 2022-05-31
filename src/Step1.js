@@ -7,19 +7,21 @@ import { PrimaryButton } from './Components/PrimaryButton';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+
+const schema = yup.object().shape({
+  firstName: yup
+    .string()
+    .matches(/^([^0-9]*)$/, 'First name should not contain numbers')
+    .required('First name is a required field'),
+  lastName: yup
+    .string()
+    .matches(/^([^0-9]*)$/, 'Last name should not contain numbers')
+    .required('Last name is a required field'),
+});
 
 export const Step1 = () => {
-  const schema = yup.object().shape({
-    firstName: yup
-      .string()
-      .matches(/^([^0-9]*)$/, 'First name should not contain numbers')
-      .required('First name is a required field'),
-    lastName: yup
-      .string()
-      .matches(/^([^0-9]*)$/, 'Last name should not contain numbers')
-      .required('Last name is a required field'),
-  });
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,7 +29,7 @@ export const Step1 = () => {
   } = useForm({ mode: 'onBlur', resolver: yupResolver(schema) });
 
   const onSubmit = (data) => {
-    console.log(data);
+    navigate('/step2')
   };
 
   return (

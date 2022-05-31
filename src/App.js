@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Header } from './Components/Header';
 import { Step1 } from './Components/Pages/Step1';
@@ -9,6 +10,7 @@ const Result = () => <>Result</>;
 function App() {
   return (
     <>
+   
       <Header />
       <BrowserRouter>
         <Routes>

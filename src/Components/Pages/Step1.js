@@ -1,9 +1,9 @@
 import Typography from '@material-ui/core/Typography';
 import { useForm } from 'react-hook-form';
-import { Form } from './Components/Form';
-import { Input } from './Components/Input';
-import { MainContainer } from './Components/MainContainer';
-import { PrimaryButton } from './Components/PrimaryButton';
+import { Form } from '../Form';
+import { Input } from '../Input';
+import { MainContainer } from '../MainContainer';
+import { PrimaryButton } from '../PrimaryButton';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';

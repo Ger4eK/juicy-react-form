@@ -8,6 +8,7 @@ import { PrimaryButton } from '../PrimaryButton';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
+import parsePhoneNumberFromString from 'libphonenumber-js';
 
 const schema = yup.object().shape({
   email: yup
@@ -15,6 +16,14 @@ const schema = yup.object().shape({
     .email('Email should have correct format')
     .required('Email is a required field'),
 });
+
+const normalizePhoneNumber = (value) => {
+  const phoneNumber = parsePhoneNumberFromString(value);
+  if (!phoneNumber) {
+    return value;
+  }
+  return phoneNumber.formatInternational()
+};
 
 export const Step2 = () => {
   const navigate = useNavigate();
@@ -67,6 +76,9 @@ export const Step2 = () => {
             type='tel'
             label='Phone Number'
             name='phoneNumber'
+            onChange={(event) => {
+              event.target.value = normalizePhoneNumber(event.target.value);
+            }}
           />
         )}
         <PrimaryButton>Next</PrimaryButton>
